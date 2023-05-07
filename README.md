@@ -49,9 +49,5 @@ The player has either won the game, lost the game, or decided to exit the game.
 - **Singleton:** Use the Singleton pattern for the Game class to ensure there's only one instance of the game at any given time. This instance will manage the game state, heart, level, and control the game loop.
 - **Strategy:** Use the Strategy pattern to define various movement and behavior strategies for game objects like the Player, Meteors, and AlienShip. This pattern allows to change the behavior of game objects at runtime, making it easier to add new behaviors or modify existing ones.
 
-## **Group Member**
-1. 6410545444 	Thanida Chaiwongnon [(thanidacwn)](https://github.com/thanidacwn)
-2. 6410545487 	Napasakorn 	Boonkerd [(Savetang19)](https://github.com/Savetang19)
-3. 6410545576	Ratchaprapa Chattrakulrak [(ProudHokori)](https://github.com/ProudHokori)
 
 ---
