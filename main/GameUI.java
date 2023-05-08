@@ -15,16 +15,13 @@ public class GameUI extends JFrame implements MouseInputListener, KeyListener {
     private ArrayList<GameObject> components;
     private GamePanel gamePanel;
     private GameLogic game;
-
-    private boolean start = true;
     private Point mouseLockedCenter = new Point(0,0) ;
 
     public GameUI(){
         game = new GameLogic();
-        game.createGameObjects();
-        game.startTimer();
         gamePanel = new GamePanel(game);
-        gamePanel.setBackground(new Color(55,55,55));
+        gamePanel.setBackground(new Color(30,30,30));
+        gamePanel.gameUI = this;
         add(gamePanel);
         setVisible(true);
         setPreferredSize(new Dimension(1200, 500));
@@ -34,11 +31,13 @@ public class GameUI extends JFrame implements MouseInputListener, KeyListener {
         addMouseListener(this);
         addMouseMotionListener(this);
 
+        game.createGameObjects();
+        game.startTimer();
 
         setFocusable(true);
         pack();
 
-        while(start){
+        while(true){
             game.update(this, mouseLockedCenter.x, mouseLockedCenter.y);
         }
     }
@@ -47,8 +46,6 @@ public class GameUI extends JFrame implements MouseInputListener, KeyListener {
     public void keyPressed(KeyEvent e) {
 
     }
-
-
 
     @Override
     public void keyReleased(KeyEvent e) {
@@ -70,11 +67,17 @@ public class GameUI extends JFrame implements MouseInputListener, KeyListener {
 
     @Override
     public void mousePressed(MouseEvent e) {
+        if (e.getX() >= 570 && e.getX() <= 570 + 90 && e.getY() >= 300 && e.getY() <= 300 + 90 && !game.isStart) {
+            game.isStart = true;
+            game.reset(1);
+        }
 
+        if (e.getX() >= 570 && e.getX() <= 570 + 90 && e.getY() >= 300 && e.getY() <= 300 + 90 && game.level == 4) {
+            game.reset(1);
+        }
     }
 
     @Override
-
     public void mouseReleased(MouseEvent e) {
 
     }
@@ -102,12 +105,9 @@ public class GameUI extends JFrame implements MouseInputListener, KeyListener {
         float deltaX =  newMouseLocation.x;
         float deltaY =  newMouseLocation.y;
 
-
-
         mouseLockedCenter.x = (int) deltaX;
         mouseLockedCenter.y = (int) deltaY;
-        //System.out.println(newMouseLocation);
-        //System.out.println(mouseLockedCenter);
+
     }
 
 }

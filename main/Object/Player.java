@@ -1,13 +1,16 @@
 package main.Object;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.Ellipse2D;
-import java.awt.geom.Point2D;
 
 public class Player extends GameObject {
     private final int gamePanelWidth = 1200;
     private final int gamePanelHeight = 500;
 
+    public boolean isMove = true;
+
+    public float MOVE_SPEED = 7;
     public int lifepoint = 3;
     public static Point PlayerPosition;
 
@@ -17,19 +20,24 @@ public class Player extends GameObject {
 
     }
 
+
     //Move logic goes here
     @Override
     public void move(float deltaX, float deltaY) {
-        float newX = deltaX-50;
-        float newY = deltaY-50;
 
-        if (newX >= 0 && newX + getSizeX() <= gamePanelWidth) {
-            setPosX(newX);
+        if(isMove) {
+            float newX = deltaX - 50;
+            float newY = deltaY - 50;
+
+            if (newX >= 0 && newX + getSizeX() <= gamePanelWidth) {
+                setPosX(newX);
+            }
+
+            if (newY >= 0 && newY + getSizeY() <= gamePanelHeight - 45) {
+                setPosY(newY);
+            }
         }
 
-        if (newY >= 0 && newY + getSizeY() <= gamePanelHeight-45) {
-            setPosY(newY);
-        }
     }
 
 
