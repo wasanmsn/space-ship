@@ -24,6 +24,7 @@ public class GameUI extends JFrame implements MouseInputListener, KeyListener {
         game.createGameObjects();
         game.startTimer();
         gamePanel = new GamePanel(game);
+        gamePanel.setBackground(new Color(55,55,55));
         add(gamePanel);
         setVisible(true);
         setPreferredSize(new Dimension(1200, 500));
@@ -32,11 +33,9 @@ public class GameUI extends JFrame implements MouseInputListener, KeyListener {
         addKeyListener(this);
         addMouseListener(this);
         addMouseMotionListener(this);
-//        mouseLockedCenter = getMouseLockedCenter();
 
-//        hideMouse();
+
         setFocusable(true);
-//        setCursorLocation(mouseLockedCenter);
         pack();
 
         while(start){
@@ -49,14 +48,8 @@ public class GameUI extends JFrame implements MouseInputListener, KeyListener {
 
     }
 
-    private Point getMouseLockedCenter() {
-        Point lockedCenter = new Point(gamePanel.getWidth() / 2, gamePanel.getHeight() / 2);
-        SwingUtilities.convertPointToScreen(lockedCenter, gamePanel);
-        return lockedCenter;
-    }
-    private void setCursorLocation(Point point) {
 
-    }
+
     @Override
     public void keyReleased(KeyEvent e) {
     }
@@ -77,16 +70,11 @@ public class GameUI extends JFrame implements MouseInputListener, KeyListener {
 
     @Override
     public void mousePressed(MouseEvent e) {
-//        if (e.getButton() == MouseEvent.BUTTON3) {
-//            mouseLocked = !mouseLocked;
-//
-//            if (mouseLocked) {
-//                setCursorLocation(mouseLockedCenter);
-//            }
-//        }
+
     }
 
     @Override
+
     public void mouseReleased(MouseEvent e) {
 
     }
@@ -118,9 +106,8 @@ public class GameUI extends JFrame implements MouseInputListener, KeyListener {
 
         mouseLockedCenter.x = (int) deltaX;
         mouseLockedCenter.y = (int) deltaY;
-        System.out.println(newMouseLocation);
-        System.out.println(mouseLockedCenter);
-//        setCursorLocation(mouseLockedCenter);
+        //System.out.println(newMouseLocation);
+        //System.out.println(mouseLockedCenter);
     }
 
 }

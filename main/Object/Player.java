@@ -1,11 +1,15 @@
 package main.Object;
 
+import java.awt.*;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Point2D;
 
 public class Player extends GameObject {
     private final int gamePanelWidth = 1200;
     private final int gamePanelHeight = 500;
+
+    public int lifepoint = 3;
+    public static Point PlayerPosition;
 
     //Initiate Player object
     public Player(float posX, float posY, float sizeX, float sizeY, float desX, float desY) {
