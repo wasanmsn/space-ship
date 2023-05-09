@@ -9,19 +9,18 @@ import javax.swing.Timer;
 
 public class AlienShip extends GameObject {
 
+    public Player getPlayer(Player player_) {
+        return Player = player_;
+    };
+    public ArrayList<Bullet> bullet = new ArrayList<Bullet>();
+    public boolean isMove = true;
+
     private GameObjectFactory gameObjectFactory;
     private final float RATIO = 0.25f;
     private Player Player;
-
-    public Player getPlayer(Player player_)
-    {
-        return Player = player_;
-    };
-
+    private Timer timerAleinMove;
     private AlienShip thisAlienShip;
-    public ArrayList<Bullet> bullet = new ArrayList<Bullet>();
     private static final float MOVE_SPEED = 2.7f;
-    public boolean isMove = true;
 
     public AlienShip(float posX, float posY, float sizeX, float sizeY, float desX, float desY) {
         super(posX, posY, sizeX, sizeY, desX, desY, new Ellipse2D.Float(posX, posY, sizeX, sizeY), "../resources/alienship.png");
@@ -30,8 +29,6 @@ public class AlienShip extends GameObject {
         move(0,0);
         thisAlienShip = this;
     }
-
-    private Timer timerAleinMove;
 
     public void move(float posX, float posY) {
         timerAleinMove = new Timer(25, new ActionListener() {

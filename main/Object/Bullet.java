@@ -8,31 +8,29 @@ import java.awt.geom.Ellipse2D;
 
 public class Bullet extends GameObject {
 
+    public float MOVE_SPEED = 20;
+    float endX;
+    float endY;
     public float pointX;
     public float pointY;
-    private Timer timerBullet;
-
     public Player Player_;
-    public Player getPlayer(Player player_)
-    {
+    public Player getPlayer(Player player_) {
         if(player_ != null) {move(player_.getPosX() + 20, player_.getPosY() + 20);}
         return Player_= player_;
     };
-
     public AlienShip AlienShip;
-    public AlienShip getAlienShip(AlienShip AlienShip_)
-    {
+    public AlienShip getAlienShip(AlienShip AlienShip_) {
         return AlienShip= AlienShip_;
     };
+
+
+    private Timer timerBullet;
+
     public Bullet(float posX, float posY, float sizeX, float sizeY, float desX, float desY) {
         super(posX, posY, sizeX, sizeY, desX, desY,new Ellipse2D.Float(posX,posY,sizeX,sizeY),"../resources/bullet.png");
         pointX = getPosX();
         pointY = getPosY();
     }
-
-    public float MOVE_SPEED = 20;
-    float endX;
-    float endY;
 
     @Override
     public boolean checkCollision(GameObject object2) {
@@ -82,6 +80,4 @@ public class Bullet extends GameObject {
         int sphereSize = 10;
         g2d.fillOval((int) getPosX(), (int) getPosY(), sphereSize, sphereSize);
     }
-
-
 }

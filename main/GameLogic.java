@@ -10,34 +10,23 @@ import java.util.Random;
 import javax.swing.Timer;
 
 public class GameLogic {
-    private final GameObjectFactory gameObjectFactory;
+
+    private int max_alien_count = 0;
+    private int level = 1;
     private final float RATIO = 0.25f;
     private Random random = new Random();
+    private ArrayList<Timer> timers = new ArrayList<>();
+    private Timer coutDownNextLevel;
+    private final GameObjectFactory gameObjectFactory;
+
+    public int getLevel() { return level; }
     public Player player;
     public boolean isStart = false;
-    private int level = 1;
-
-    public int getLevel()
-    {
-        return level;
-    }
-    private int max_alien_count = 0;
-
-    public ArrayList<GameObject> gameObjects = new ArrayList<>();
-
-    private ArrayList<Timer> timers = new ArrayList<>();
-
-    private Timer coutDownNextLevel;
     public boolean nextLevlUi = false;
-
-
-    public GameLogic() {
-        this.gameObjectFactory = new DefualtGameObjectFactory();
-    }
-
-    public Point randomPoint () {
-        return new Point(random.nextInt(1000),random.nextInt(450));
-    }
+    public ArrayList<GameObject> gameObjects = new ArrayList<>();
+    public ArrayList<GameObject> getGameObjects(){ return gameObjects; }
+    public Point randomPoint () { return new Point(random.nextInt(1000),random.nextInt(450)); }
+    public GameLogic() { this.gameObjectFactory = new DefualtGameObjectFactory(); }
 
     public void reset(int lv) {
         gameObjects.clear();
@@ -126,12 +115,7 @@ public class GameLogic {
         timers.add(timerAlein);
     }
 
-    public ArrayList<GameObject> getGameObjects(){
-        return gameObjects;
-    }
-
-    public void retrunMouse()
-    {
+    public void retrunMouse() {
         try {
             Robot robot = new Robot();
 
@@ -144,7 +128,6 @@ public class GameLogic {
             e.printStackTrace();
         }
     }
-
 
     public void update(GameUI gamePanel, float deltaX, float deltaY) {
 

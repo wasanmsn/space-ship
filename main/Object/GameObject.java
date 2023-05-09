@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 
 public abstract class GameObject {
+
     private float posX;
     private float posY;
     private float sizeX;
@@ -37,14 +38,12 @@ public abstract class GameObject {
     public float getPosX() {
         return posX;
     }
-
     public float getPosY() {
         return posY;
     }
     public void setPosX(float posX) {
         this.posX = posX;
     }
-
     public void setPosY(float posY) {
         this.posY = posY;
     }
@@ -54,11 +53,9 @@ public abstract class GameObject {
     public Image getImage(){
         return image;
     }
-
     public float getSizeX(){
         return sizeX;
     }
-
     public float getSizeY(){
         return sizeY;
     }

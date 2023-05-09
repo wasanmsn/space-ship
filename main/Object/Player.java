@@ -7,23 +7,23 @@ import java.awt.event.ActionListener;
 import java.awt.geom.Ellipse2D;
 
 public class Player extends GameObject {
+    
     private final int gamePanelWidth = 1200;
     private final int gamePanelHeight = 500;
-
-    public boolean isMove;
     private int lifepoint = 3;
 
-    public int getLifepoint()
-    {
+    public int getLifepoint() {
         return this.lifepoint;
     };
 
-    public int setLifepoint(int lifepoint)
-    {
+    public int setLifepoint(int lifepoint) {
         return this.lifepoint = lifepoint;
     };
-    Timer time;
+
+    public boolean isMove;
     public  boolean inVisibelTime = false;
+
+    Timer time;
 
     public Player(float posX, float posY, float sizeX, float sizeY, float desX, float desY) {
         super(posX, posY, sizeX, sizeY, desX, desY,new Ellipse2D.Float(posX,posY,sizeX,sizeY),"../resources/spaceship.png");
@@ -54,7 +54,6 @@ public class Player extends GameObject {
         }
     }
 
-
     @Override
     public void move(float deltaX, float deltaY) {
 
@@ -73,8 +72,7 @@ public class Player extends GameObject {
 
     }
 
-    public void inVisibelTime()
-    {
+    public void inVisibelTime() {
         inVisibelTime = true;
          time = new Timer(899, new ActionListener() {
             @Override

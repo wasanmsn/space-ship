@@ -28,14 +28,13 @@ public class GamePanel extends JPanel  {
     private static final int CHANNEL_SIZE = 2;
     private static final int CHANNEL_GAP = 40;
 
-    public GamePanel(GameLogic game){
+    public GamePanel(GameLogic game) {
         this.game = game;
         setPreferredSize(new Dimension(1200,500));
 
     }
 
-    public void drawLevel(Graphics2D graphics2D)
-    {
+    public void drawLevel(Graphics2D graphics2D) {
         Font customFont = null;
         try {
             File fontFile = new File("assets/ARCADECLASSIC.TTF");
@@ -62,8 +61,7 @@ public class GamePanel extends JPanel  {
         graphics2D.drawString(text, 1050, 40);
     }
 
-    public void drawCenterScreen(Graphics2D graphics2D)
-    {
+    public void drawCenterScreen(Graphics2D graphics2D) {
 
 
         Font customFont = null;
@@ -139,8 +137,8 @@ public class GamePanel extends JPanel  {
             }
         }
     }
-    public void LifePointIcon(GameObject gameObject,Graphics2D graphics2D)
-    {
+
+    public void LifePointIcon(GameObject gameObject,Graphics2D graphics2D) {
         if(gameObject instanceof Player) {
             Player player = (Player) gameObject;
 
@@ -176,8 +174,7 @@ public class GamePanel extends JPanel  {
         }
     }
 
-    public void CheckState()
-    {
+    public void CheckState() {
         if(game.getLevel() >= 4)
         {
             for (GameObject gameObject : game.getGameObjects()) {
@@ -193,8 +190,7 @@ public class GamePanel extends JPanel  {
         }
     }
 
-    public void drawBackground(Graphics2D graphics2D)
-    {
+    public void drawBackground(Graphics2D graphics2D) {
 
         int startX = 0;
         int startY = 0;
@@ -244,7 +240,6 @@ public class GamePanel extends JPanel  {
 
         CheckState();
     }
-
 
 }
 
