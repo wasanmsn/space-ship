@@ -1,7 +1,10 @@
 package main.Object;
 
 import javax.imageio.ImageIO;
+import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.IOException;
 
 public abstract class GameObject {
@@ -60,5 +63,17 @@ public abstract class GameObject {
         return sizeY;
     }
     public abstract void move(float posX,float posY);
+
+    public boolean checkCollision(GameObject object2) {
+
+        Rectangle bounds1 = new Rectangle((int) this.getPosX(), (int) this.getPosY(), (int) this.getSizeX(), (int) this.getSizeY());
+        Rectangle bounds2 = new Rectangle((int) object2.getPosX(), (int) object2.getPosY(), (int) object2.getSizeX(), (int) object2.getSizeY());
+
+        if (bounds1.intersects(bounds2)) {
+            return true;
+        }
+
+        return false;
+    }
 
 }

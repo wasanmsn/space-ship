@@ -15,8 +15,12 @@ public class GameLogic {
     private Random random = new Random();
     public Player player;
     public boolean isStart = false;
-    public int level = 1;
+    private int level = 1;
 
+    public int getLevel()
+    {
+        return level;
+    }
     private int max_alien_count = 0;
 
     public ArrayList<GameObject> gameObjects = new ArrayList<>();
@@ -41,16 +45,9 @@ public class GameLogic {
         createGameObjects();
         max_alien_count = 0;
         level = lv;
-        player.lifepoint = 3;
+        player.setLifepoint(3);
         player.isMove = true;
-
-        try {
-            Robot robot = new Robot();
-            robot.mouseMove(100, 250);
-        } catch (AWTException e) {
-            e.printStackTrace();
-        }
-
+        retrunMouse();
         timers.forEach(Timer::stop);
         startTimer();
     }
@@ -67,26 +64,30 @@ public class GameLogic {
 
     public void collision_timer_tick(boolean bool) {
         Timer timers_collision = new Timer(100, new ActionListener() {
+
             @Override
             public void actionPerformed(ActionEvent e) {
                 for (GameObject gameObject : gameObjects) {
-                    if (gameObject != null) {
-                        if (gameObject instanceof AlienShip) {
-                            AlienShip alienShip = (AlienShip) gameObject;
-                            checkCollision(player, alienShip);
-                        }
-                        if (gameObject instanceof Bullet) {
-                            Bullet bullet = (Bullet) gameObject;
-                            checkCollision(player, bullet);
-                        }
-                        if (gameObject instanceof Meteor) {
-                            Meteor meteor = (Meteor) gameObject;
-                            checkCollision(player, meteor);
-                        }
-                        if (gameObject instanceof Base) {
-                            Base base1 = (Base) gameObject;
-                            checkCollision(player, base1);
-                        }
+                    if (gameObject != null && player.checkCollision(gameObject))
+                    {
+                        player.isMove = false;
+                        player.setLifepoint(3);
+                        nextLevlUi = true;
+                        coutDownNextLevel = new Timer(2000, new ActionListener() {
+                            @Override
+                            public void actionPerformed(ActionEvent e) {
+                                player.isMove = true;
+                                player.move(100,120);
+                                retrunMouse();
+                                level = level + 1;
+                                nextLevlUi = false;
+                                reset(level);
+                                coutDownNextLevel.stop();
+                            }
+                        });
+                        coutDownNextLevel.setRepeats(false);
+                        coutDownNextLevel.start();
+                        ((Timer) e.getSource()).stop();
                     }
                 }
             }
@@ -100,7 +101,6 @@ public class GameLogic {
         }
     }
 
-
     public void startTimer() {
         Timer timerMeteor = new Timer(1000, new ActionListener() {
             @Override
@@ -110,15 +110,15 @@ public class GameLogic {
                 gameObjects.add(meteor);
             }
         });
+
         Timer timerAlein = new Timer(2000, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 Point point = randomPoint();
                 ++max_alien_count;
                 AlienShip alien = (AlienShip) gameObjectFactory.createGameObject(GameObjectType.ALIEN_SHIP,point.x,point.y,200*RATIO,180*RATIO,5,5);
-                alien.player = player;
+                alien.getPlayer(player);
                 gameObjects.add(alien);
-
             }
         });
 
@@ -146,62 +146,18 @@ public class GameLogic {
     }
 
 
-
-    public boolean checkCollision(GameObject object1, GameObject object2) {
-        if (player.lifepoint > 0) {
-            Rectangle bounds1 = new Rectangle((int) object1.getPosX(), (int) object1.getPosY(), (int) object1.getSizeX(), (int) object1.getSizeY());
-            Rectangle bounds2 = new Rectangle((int) object2.getPosX(), (int) object2.getPosY(), (int) object2.getSizeX(), (int) object2.getSizeY());
-
-            if (bounds1.intersects(bounds2) && player.isMove) {
-                retrunMouse();
-
-                if (object2 instanceof Base) {
-
-                    player.isMove = false;
-                    player.lifepoint = 3;
-                    nextLevlUi = true;
-
-                    coutDownNextLevel = new Timer(2000, new ActionListener() {
-                        @Override
-                        public void actionPerformed(ActionEvent e) {
-                            player.isMove = true;
-                            player.move(100,120);
-                            retrunMouse();
-                            coutDownNextLevel.stop();
-                            level = level + 1;
-                            nextLevlUi = false;
-                            reset(level);
-                        }
-                    });
-
-                    coutDownNextLevel.start();
-
-                }
-                else
-                {
-                    if(object2 instanceof Player)
-                    {
-
-                    }
-                    else
-                    {
-                        player.lifepoint = player.lifepoint - 1;
-                    }
-
-                    if (object2 instanceof Bullet) {
-                        System.out.println("Bullet Hit");
-                    }
-
-                }
-                return true;
-            }
-
-        }
-        return false;
-    }
-
-
     public void update(GameUI gamePanel, float deltaX, float deltaY) {
+
+        if(player != null) {
+            Rectangle Mouse_ = new Rectangle((int) deltaX - 20, (int) deltaY - 50, 50, 50);
+            Rectangle Player_ = new Rectangle((int) player.getPosX(), (int) player.getPosY(), (int) player.getSizeX(), (int) player.getSizeY());
+
+            if(Mouse_.intersects(Player_)) {
+                player.move(deltaX, deltaY);
+            }
+        }
+
+
         if(isStart) {
             switch (level) {
                 case 1 -> {
@@ -236,13 +192,20 @@ public class GameLogic {
 
             }
 
-            if (player.lifepoint <= 0) {
+            if (player.getLifepoint() <= 0) {
                 level = 4;
                 player.isMove = false;
             }
 
-            player.move(deltaX, deltaY);
-            Player.PlayerPosition = new Point((int) deltaX, (int) deltaY);
+            for (GameObject gameObject : gameObjects)
+            {
+                if(!player.isMove && (gameObject instanceof  AlienShip))
+                {
+                    AlienShip alienShip = (AlienShip) gameObject;
+                    alienShip.isMove = false;
+                }
+            }
+
         }
         gamePanel.repaint();
     }

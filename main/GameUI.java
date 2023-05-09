@@ -31,15 +31,14 @@ public class GameUI extends JFrame implements MouseInputListener, KeyListener {
         addMouseListener(this);
         addMouseMotionListener(this);
 
-        game.createGameObjects();
-        game.startTimer();
-
         setFocusable(true);
         pack();
 
-        while(true){
+        Timer main = new Timer(5,e -> {
             game.update(this, mouseLockedCenter.x, mouseLockedCenter.y);
-        }
+        });
+        main.start();
+
     }
 
     @Override
@@ -72,7 +71,7 @@ public class GameUI extends JFrame implements MouseInputListener, KeyListener {
             game.reset(1);
         }
 
-        if (e.getX() >= 570 && e.getX() <= 570 + 90 && e.getY() >= 300 && e.getY() <= 300 + 90 && game.level == 4) {
+        if (e.getX() >= 570 && e.getX() <= 570 + 90 && e.getY() >= 300 && e.getY() <= 300 + 90 && game.getLevel() == 4) {
             game.reset(1);
         }
     }
@@ -94,12 +93,6 @@ public class GameUI extends JFrame implements MouseInputListener, KeyListener {
 
     @Override
     public void mouseDragged(MouseEvent e) {
-
-    }
-
-    @Override
-    public void mouseMoved(MouseEvent e) {
-
         Point newMouseLocation = e.getPoint();
 
         float deltaX =  newMouseLocation.x;
@@ -107,6 +100,10 @@ public class GameUI extends JFrame implements MouseInputListener, KeyListener {
 
         mouseLockedCenter.x = (int) deltaX;
         mouseLockedCenter.y = (int) deltaY;
+    }
+
+    @Override
+    public void mouseMoved(MouseEvent e) {
 
     }
 

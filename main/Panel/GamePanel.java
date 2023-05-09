@@ -11,6 +11,8 @@ import javax.swing.*;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 
@@ -19,8 +21,8 @@ import java.io.IOException;
 public class GamePanel extends JPanel  {
 
     private GameLogic game;
-
     public GameUI gameUI;
+
     private static final int ROWS = 12;
     private static final int COLS = 30;
     private static final int CHANNEL_SIZE = 2;
@@ -48,9 +50,11 @@ public class GamePanel extends JPanel  {
 
         String text = null;
 
-        if(game.level != 4) {
-            text = "LV " + game.level;
-        }else if(game.level >= 4)
+        if(game.getLevel() < 4) {
+            text = "LV " + game.getLevel();
+        }
+
+        if(game.getLevel() >= 4)
         {
             text = "";
         }
@@ -60,6 +64,8 @@ public class GamePanel extends JPanel  {
 
     public void drawCenterScreen(Graphics2D graphics2D)
     {
+
+
         Font customFont = null;
         try {
             File fontFile = new File("assets/ARCADECLASSIC.TTF");
@@ -74,11 +80,17 @@ public class GamePanel extends JPanel  {
 
         String text = null;
 
-        if(game.level >= 4 && game.player.lifepoint > 1) {
+        if (game.nextLevlUi)
+        {
+            text = "LEVEL UP!";
+            graphics2D.drawString(text, 350, 250);
+        }
+
+        if(game.getLevel() >= 4 && game.player.getLifepoint() > 1) {
             text = "WON!";
             graphics2D.drawString(text, 450, 250);
 
-        }else if(game.level == 4 && game.player.lifepoint <= 0)
+        }else if(game.getLevel() == 4 && game.player.getLifepoint() <= 0)
         {
             text = "GAME OVER!";
             graphics2D.drawString(text, 350, 250);
@@ -93,12 +105,7 @@ public class GamePanel extends JPanel  {
                 e.printStackTrace();
             }
         }
-        else if (game.nextLevlUi)
-        {
-            text = "LEVEL UP!";
-            graphics2D.drawString(text, 350, 250);
 
-        }
 
     }
 
@@ -144,7 +151,7 @@ public class GamePanel extends JPanel  {
                 int x = 1000;
                 int y = 20;
 
-                switch (player.lifepoint) {
+                switch (player.getLifepoint()) {
                     case 1: {
                         graphics2D.drawImage(heartImage, x, y, 30, 25, null);
                         break;
@@ -171,7 +178,7 @@ public class GamePanel extends JPanel  {
 
     public void CheckState()
     {
-        if(game.level >= 4)
+        if(game.getLevel() >= 4)
         {
             for (GameObject gameObject : game.getGameObjects()) {
                 if(gameObject instanceof AlienShip && gameObject != null) {
@@ -183,7 +190,6 @@ public class GamePanel extends JPanel  {
                     player.isMove = false;
                 }
             }
-
         }
     }
 
@@ -208,6 +214,7 @@ public class GamePanel extends JPanel  {
             }
         }
     }
+
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -219,10 +226,10 @@ public class GamePanel extends JPanel  {
         drawLevel(graphics2D);
         drawCenterScreen(graphics2D);
 
-
         for (GameObject gameObject : game.getGameObjects()) {
             LifePointIcon(gameObject, graphics2D);
             graphics2D.drawImage(gameObject.getImage(), (int) gameObject.getPosX(), (int) gameObject.getPosY(), (int) gameObject.getSizeX(), (int) gameObject.getSizeY(), this);
+
             if(gameObject instanceof AlienShip){
                 AlienShip alienShip = (AlienShip) gameObject;
                 if(alienShip.bullet != null)

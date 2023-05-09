@@ -11,19 +11,21 @@ public class Bullet extends GameObject {
     public float pointX;
     public float pointY;
     private Timer timerBullet;
-    public Player player;
-    public AlienShip alienShip;
 
-    private Timer collisionTimer;
-    private int collisionInterval = 100;
+    public Player Player_;
+    public Player getPlayer(Player player_)
+    {
+        if(player_ != null) {move(player_.getPosX() + 20, player_.getPosY() + 20);}
+        return Player_= player_;
+    };
 
+    public AlienShip AlienShip;
+    public AlienShip getAlienShip(AlienShip AlienShip_)
+    {
+        return AlienShip= AlienShip_;
+    };
     public Bullet(float posX, float posY, float sizeX, float sizeY, float desX, float desY) {
         super(posX, posY, sizeX, sizeY, desX, desY,new Ellipse2D.Float(posX,posY,sizeX,sizeY),"../resources/bullet.png");
-        move(Player.PlayerPosition.x - 20,Player.PlayerPosition.y -20);
-
-        collisionTimer = new Timer(collisionInterval, e -> checkCollision());
-        collisionTimer.start();
-
         pointX = getPosX();
         pointY = getPosY();
     }
@@ -32,19 +34,16 @@ public class Bullet extends GameObject {
     float endX;
     float endY;
 
-    public boolean checkCollision() {
-
-        Rectangle bounds_bull = new Rectangle((int) this.getPosX(), (int)this.getPosY(), (int) getSizeX(), (int) getSizeY());
-        Rectangle bounds2 = new Rectangle((int) player.getPosX(), (int) player.getPosY(), (int) player.getSizeX(), (int) player.getSizeY());
-
-        if (bounds_bull.intersects(bounds2)) {
-            collisionTimer.stop();
-            alienShip.Destory_bullet(Bullet.this);
+    @Override
+    public boolean checkCollision(GameObject object2) {
+        Rectangle bounds1 = new Rectangle((int) this.getPosX(), (int) this.getPosY(), (int) this.getSizeX(), (int) this.getSizeY());
+        Rectangle bounds2 = new Rectangle((int) object2.getPosX(), (int) object2.getPosY(), (int) object2.getSizeX(), (int) object2.getSizeY());
+        if (bounds1.intersects(bounds2) && (object2 instanceof Player)) {
+            Player_.Damage(1);
             return true;
         }
         return false;
-    };
-
+    }
 
     @Override
     public void move(float posX, float posY) {
@@ -62,31 +61,26 @@ public class Bullet extends GameObject {
             private float currentX = startX;
             private float currentY = startY;
 
+
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                checkCollision(Player_);
                 currentX += moveX;
                 currentY += moveY;
                 setPosX(currentX);
                 setPosY(currentY);
                 endX += moveX;
                 endY += moveY;
-
             }
         });
 
         timerBullet.start();
     }
 
-
-
     public void draw(Graphics2D g2d) {
         g2d.setColor(Color.yellow);
-
         int sphereSize = 10;
-
         g2d.fillOval((int) getPosX(), (int) getPosY(), sphereSize, sphereSize);
-
     }
 
 
